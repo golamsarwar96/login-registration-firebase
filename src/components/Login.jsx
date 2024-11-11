@@ -1,6 +1,12 @@
+import { Link } from "react-router-dom";
+
 const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    console.log(email, password);
   };
   return (
     <div>
@@ -44,6 +50,9 @@ const Login = () => {
                 <button className="btn btn-primary">Login</button>
               </div>
             </form>
+            <p className="ml-4 mb-4">
+              New to this website? Please <Link to="/register">Register</Link>
+            </p>
           </div>
         </div>
       </div>
