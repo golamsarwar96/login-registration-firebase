@@ -1,7 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 const Register = () => {
+  //Showing Error Message using a state. setErrorMessage is set using
+  //.catch part. error.message is set in the state setErrorMessage (line - 7)
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
   const { createUser } = useContext(AuthContext);
   const handleRegister = (e) => {
@@ -10,7 +14,8 @@ const Register = () => {
     const password = e.target.password.value;
     const name = e.target.name.value;
     console.log(name, email, password);
-
+    //resetting error message
+    setErrorMessage("");
     //Got this from context
     createUser(email, password)
       .then((result) => {
@@ -20,6 +25,7 @@ const Register = () => {
       })
       .catch((error) => {
         console.log("ERROR", error.message);
+        setErrorMessage(error.message);
       });
   };
   return (
@@ -75,6 +81,7 @@ const Register = () => {
             <p className="ml-4 mb-4">
               Already have an account ? Please <Link to="/login">Login</Link>
             </p>
+            {errorMessage && <p className="p-5 text-red-400">{errorMessage}</p>}
           </div>
         </div>
       </div>
