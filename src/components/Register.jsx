@@ -4,6 +4,7 @@ import { AuthContext } from "../Providers/AuthProvider";
 const Register = () => {
   //Showing Error Message using a state. setErrorMessage is set using
   //.catch part. error.message is set in the state setErrorMessage (line - 7)
+  const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
@@ -14,6 +15,12 @@ const Register = () => {
     const password = e.target.password.value;
     const name = e.target.name.value;
     console.log(name, email, password);
+    //Password Validation.
+    if (password.length < 6) {
+      setErrorMessage("Password should be more than 6 characters");
+      //firebase porjonto jabe na. code ei validation kore felbo.
+      return;
+    }
     //resetting error message
     setErrorMessage("");
     //Got this from context
@@ -21,11 +28,13 @@ const Register = () => {
       .then((result) => {
         console.log(result.user);
         e.target.reset();
+        setSuccess(true);
         navigate("/");
       })
       .catch((error) => {
         console.log("ERROR", error.message);
         setErrorMessage(error.message);
+        setSuccess(false);
       });
   };
   return (
@@ -82,6 +91,9 @@ const Register = () => {
               Already have an account ? Please <Link to="/login">Login</Link>
             </p>
             {errorMessage && <p className="p-5 text-red-400">{errorMessage}</p>}
+            {success && (
+              <p className="p-5 text-green-400">Sign Up is Successful</p>
+            )}
           </div>
         </div>
       </div>
